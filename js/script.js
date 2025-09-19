@@ -127,11 +127,17 @@ function initPriceCarousel() {
     const dots = document.querySelectorAll('.price-dot');
     const prevBtn = document.querySelector('.price-arrow.prev');
     const nextBtn = document.querySelector('.price-arrow.next');
-    const totalSlides = slides.length;
+    
+    // Добавьте эти проверки
+    if (!slides.length || !dots.length || !prevBtn || !nextBtn) {
+        console.error('Не найдены элементы карусели цен');
+        return;
+    }
     
     let currentIndex = 0;
     let clickTimer = null;
-    
+    const totalSlides = slides.length; // Добавлено определение totalSlides
+
     function updateCarousel() {
         track.style.transform = `translateX(-${currentIndex * 100}%)`;
         
@@ -406,7 +412,7 @@ function initGallery() {
     const modal = document.getElementById('galleryModal');
     const galleryContainer = document.getElementById('galleryImages');
     const galleryBtn = document.getElementById('gallery-btn');
-    const closeBtn = document.querySelector('.close');
+    const closeBtn = document.querySelector('.close-gallery'); // Изменено на close-gallery
 
     if (!modal || !galleryContainer || !galleryBtn || !closeBtn) {
         console.error('Не найдены необходимые элементы галереи');
@@ -435,7 +441,7 @@ function initGallery() {
     });
 
     function loadGalleryImages() {
-    galleryContainer.innerHTML = '';
+        galleryContainer.innerHTML = '';
     
     const imageLinks = [
         'https://i.ibb.co/JRG6vb81/akvazona1.jpg',
@@ -484,32 +490,32 @@ function initGallery() {
         'https://i.ibb.co/VpmsbD5W/akvazona44.jpg'
     ];
 
-    imageLinks.forEach(imgUrl => {
-        const imgWrapper = document.createElement('div');
-        imgWrapper.className = 'gallery-item';
-        
-        const img = document.createElement('img');
-        img.src = imgUrl;
-        img.className = 'gallery-img';
-        img.loading = 'lazy';
-        
-        img.onerror = function() {
-            imgWrapper.innerHTML = `
-                <div class="image-error">
-                    <i class="fas fa-image"></i>
-                    <p>Изображение не загружено</p>
-                </div>
-            `;
-        };
-        
-        img.addEventListener('click', function() {
-            openFullscreenImage(this.src, this.alt);
+     imageLinks.forEach(imgUrl => {
+            const imgWrapper = document.createElement('div');
+            imgWrapper.className = 'gallery-item';
+            
+            const img = document.createElement('img');
+            img.src = imgUrl;
+            img.className = 'gallery-img';
+            img.loading = 'lazy';
+            
+            img.onerror = function() {
+                imgWrapper.innerHTML = `
+                    <div class="image-error">
+                        <i class="fas fa-image"></i>
+                        <p>Изображение не загружено</p>
+                    </div>
+                `;
+            };
+            
+            img.addEventListener('click', function() {
+                openFullscreenImage(this.src, this.alt);
+            });
+            
+            imgWrapper.appendChild(img);
+            galleryContainer.appendChild(imgWrapper);
         });
-        
-        imgWrapper.appendChild(img);
-        galleryContainer.appendChild(imgWrapper);
-    });
-}
+    }
 
     function openFullscreenImage(src, alt) {
         const galleryImages = Array.from(document.querySelectorAll('.gallery-img'));
@@ -663,29 +669,5 @@ function initBurgerMenu() {
             document.body.style.overflow = '';
         }
     });
-}
-.about-description {
-    line-height: 1.6;
-    margin-bottom: 1.5em;
-}
-
-.about-features,
-.about-advantages,
-.about-for-whom ul {
-    margin: 1em 0;
-    padding-left: 1.5em;
-    line-height: 1.5;
-}
-
-.about-features li,
-.about-advantages li,
-.about-for-whom li {
-    margin-bottom: 0.5em;
-}
-
-.about-conclusion {
-    font-style: italic;
-    margin-top: 1.5em;
-    padding-top: 1em;
-    border-top: 1px solid #eee;
+    
 }
